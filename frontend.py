@@ -3,7 +3,7 @@ import streamlit as st
 import requests
 import pandas as pd
 
-BACKEND_URL = "http://127.0.0.1:8000"
+BACKEND_URL = "uvicorn app:app --host 0.0.0.0 --port $PORT"
 
 st.set_page_config(page_title="AI SQL Assistant", layout="wide")
 
@@ -59,4 +59,5 @@ if st.button("Ask"):
     else:
         st.error(res.json().get("error", "Query failed."))
         
+
 
