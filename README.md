@@ -1,8 +1,16 @@
+
+
 ### SQL Agent with Gemini 1.5 Flash
 
 This project is a web application that acts as a natural language interface for a database. It allows users to upload a CSV file, which is then converted into a searchable SQLite database. The application uses the **Gemini 1.5 Flash** large language model (LLM) to convert natural language questions into SQL queries, executes the queries, and returns the results.
 
 The project is a full-stack application composed of a **FastAPI backend** and a **Streamlit frontend**.
+
+-----
+
+### Live Application
+
+**Currently running on**: [https://llm-based-sql-agent.streamlit.app/](https://llm-based-sql-agent.streamlit.app/)
 
 -----
 
@@ -87,3 +95,9 @@ The application is designed for two-part deployment:
   * **Frontend**: Can be deployed on **Streamlit Community Cloud**, which directly integrates with GitHub.
 
 Remember to configure the backend URL as a secret in your Streamlit Cloud deployment.
+
+-----
+
+Here's the architecture diagram for your `app.py` backend:
+
+http://googleusercontent.com/image_generation_content/0
