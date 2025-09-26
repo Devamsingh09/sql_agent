@@ -100,4 +100,5 @@ Remember to configure the backend URL as a secret in your Streamlit Cloud deploy
 
 Here's the architecture diagram for your `app.py` backend:
 
-[http://googleusercontent.com/image_generation_content/0](https://github.com/Devamsingh09/sql_agent)
+![Uploading sql_agent_workflow.png…]()
+
