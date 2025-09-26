@@ -100,5 +100,6 @@ Remember to configure the backend URL as a secret in your Streamlit Cloud deploy
 
 Here's the architecture diagram for your `app.py` backend:
 
-![Uploading sql_agent_workflow.png…]()
+<img width="1024" height="1024" alt="sql_agent_workflow" src="https://github.com/user-attachments/assets/1ff8d1f1-e488-4eee-ad72-b38e0b10d500" />
+
 
