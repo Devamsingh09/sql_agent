@@ -21,12 +21,12 @@ from typing import Annotated, Literal, TypedDict
 load_dotenv()
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
-app = FastAPI(title="CSV Upload + Gemini 1.5 Flash SQL API")
+app = FastAPI(title="CSV Upload + Gemini 2.5 Flash SQL API")
 
 DB_PATH = "uploaded.db"
 
 # ------------------- LLM -------------------
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 def get_db():
     return SQLDatabase.from_uri(f"sqlite:///{DB_PATH}")
@@ -76,15 +76,50 @@ Given a question, write a syntactically correct SQLite SELECT query.
     message = query_gen.invoke(state)
     return {"messages": [message]}
 
-def execute_query_gen(state: State):
-    """Extract SQL from LLM response and run it."""
+def query_check_node(state: State):
+    """Double-check and correct the SQL query before execution."""
     last_msg = state["messages"][-1]
 
-    # Extract SQL from fenced block
+    # Extract SQL
     match = re.search(r"```sqlite\s+(.*?)```", last_msg.content, re.DOTALL)
     if not match:
         return {"messages": [AIMessage(content="Error: No SQL query found in LLM response.")]}
+    sql_query = match.group(1).strip()
+    schema = get_schema()
 
+    # Validator prompt
+    system_prompt = f"""You are a SQL validator.
+The database schema is:
+
+{schema}
+
+Check the following SQL for correctness:
+{sql_query}
+
+Rules:
+- Fix column/table name errors if they don’t exist in schema.
+- Do not allow INSERT/UPDATE/DELETE/DROP.
+- Ensure it's valid SQLite syntax.
+- Always return ONLY the corrected SQL in ```sqlite ... ``` fences.
+"""
+
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        ("human", "Validate and correct the SQL query if needed.")
+    ])
+
+    query_check = prompt | llm
+    checked = query_check.invoke(state)
+    return {"messages": [checked]}
+
+def execute_query_gen(state: State):
+    """Extract SQL from checked response and run it."""
+    last_msg = state["messages"][-1]
+
+    # Extract SQL
+    match = re.search(r"```sqlite\s+(.*?)```", last_msg.content, re.DOTALL)
+    if not match:
+        return {"messages": [AIMessage(content="Error: No SQL query found in LLM response.")]}
     sql_query = match.group(1).strip()
 
     # Format SQL nicely
@@ -92,21 +127,88 @@ def execute_query_gen(state: State):
 
     result = db_query_tool(sql_query)
 
-    # Store as string inside AIMessage
     return {"messages": [AIMessage(content=json.dumps({"sql": formatted_sql, "result": result}, indent=2))]}
 
-def should_continue(state: State) -> Literal["execute_query", END]:
-    """Always continue to execute query after generation."""
-    return "execute_query"
+def should_continue(state: State) -> Literal["query_gen", "query_check", END]:
+    """
+    Decide the next step dynamically:
+    - If last message has 'error', regenerate query.
+    - If last message has 'tool_calls' (i.e., SQL ready to execute), end workflow.
+    - Otherwise, validate/correct the query in query_check.
+    """
+    last_msg = state["messages"][-1]
+
+    # Case 1: Error detected → go back to query generation
+    if getattr(last_msg, "content", "").startswith("Error:"):
+        return "query_gen"
+
+    # Case 2: SQL ready to execute → END
+    if getattr(last_msg, "tool_calls", None):
+        return END
+
+    # Case 3: Query might need validation/correction → query_check
+    return "query_check"
+
+
+def nl_output_node(state: State):
+    """Convert SQL result into natural language answer."""
+    last_msg = state["messages"][-1]
+
+    try:
+        parsed = json.loads(last_msg.content)
+        sql_query = parsed.get("sql")
+        result = parsed.get("result")
+    except Exception:
+        return {"messages": [AIMessage(content="Error: Could not parse SQL execution result.")]}
+
+    # Escape JSON to prevent template errors
+    result_str = json.dumps(result, indent=2).replace("{", "{{").replace("}", "}}")
+    sql_query_escaped = sql_query.replace("{", "{{").replace("}", "}}")
+
+    # Prepare LLM prompt
+    system_prompt = f"""
+You are a helpful assistant. 
+Convert the following SQL query and its result into a concise, natural language answer for a human:
+
+SQL Query:
+{sql_query_escaped}
+
+Result (JSON):
+{result_str}
+
+Rules:
+- Summarize the data in clear sentences.
+- Use proper punctuation and commas.
+- Mention the relevant values (like names, totals, counts) depending on the query.
+- Do not return raw JSON.
+"""
+
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        ("human", "Convert the result into natural language.")
+    ])
+
+    nl_model = prompt | llm
+    message = nl_model.invoke(state)
+    return {"messages": [message]}
+
 
 # ------------------- Workflow -------------------
 workflow = StateGraph(State)
+
 workflow.add_node("query_gen", query_gen_node)
+workflow.add_node("query_check", query_check_node)
 workflow.add_node("execute_query", execute_query_gen)
+workflow.add_node("nl_output", nl_output_node)  # ✅ final NL step
+
 workflow.add_edge(START, "query_gen")
 workflow.add_conditional_edges("query_gen", should_continue)
+workflow.add_edge("query_check", "execute_query")
+workflow.add_edge("execute_query", "nl_output")  # run final NL conversion
 
 app_graph = workflow.compile()
+
+
 
 # ------------------- FastAPI Endpoints -------------------
 @app.post("/upload")
@@ -126,20 +228,15 @@ class QueryRequest(BaseModel):
 
 @app.post("/ask")
 async def ask_db(request: QueryRequest):
-    """Ask a question in natural language and get DB results."""
+    """Ask a question and return NL answer."""
     query = {"messages": [HumanMessage(content=request.question)]}
     try:
         response = app_graph.invoke(query)
         last_msg = response["messages"][-1].content
-
-        # Try to parse JSON if possible
-        try:
-            parsed = json.loads(last_msg)
-            return {"sql": parsed.get("sql"), "answer": parsed.get("result")}
-        except Exception:
-            return {"answer": last_msg}
+        return {"answer": last_msg}  # now it's human-readable text
     except Exception as e:
         return {"error": str(e)}
+
 
 @app.get("/schema")
 def schema():
