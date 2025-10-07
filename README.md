@@ -1,6 +1,8 @@
+# SQL Agent with Gemini 2.5 Flash
+<img width="400" height="400" alt="Gemini_Generated_Image_w19ayjw19ayjw19a" src="https://github.com/user-attachments/assets/4ac892e6-6564-4d08-b72c-b86659a24a2d" />
 
 
-# SQL Agent with Gemini 1.5 Flash
+
 
 This project is a web application that acts as a natural language interface for a database. It allows users to upload a CSV file, which is then converted into a searchable SQLite database. The application uses the **Gemini 1.5 Flash** large language model (LLM) to convert natural language questions into SQL queries, executes the queries, and returns the results.
 
