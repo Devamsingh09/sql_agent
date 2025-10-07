@@ -1,105 +1,124 @@
 
 
-### SQL Agent with Gemini 1.5 Flash
+# SQL Agent with Gemini 1.5 Flash
 
 This project is a web application that acts as a natural language interface for a database. It allows users to upload a CSV file, which is then converted into a searchable SQLite database. The application uses the **Gemini 1.5 Flash** large language model (LLM) to convert natural language questions into SQL queries, executes the queries, and returns the results.
 
-The project is a full-stack application composed of a **FastAPI backend** and a **Streamlit frontend**.
+The project is a **full-stack application** composed of a FastAPI backend and a Streamlit frontend.
 
------
+---
 
-### Live Application
+## Live Application
 
-**Currently running on**: [https://llm-based-sql-agent.streamlit.app/](https://llm-based-sql-agent.streamlit.app/)
+The backend is deployed on **Render**, and the frontend is deployed on **Streamlit Community Cloud**.
 
------
+* **Backend URL:** `https://sql-agent-mpka.onrender.com/`
+* **Frontend:** [https://llm-based-sql-agent.streamlit.app/](https://llm-based-sql-agent.streamlit.app/)
 
-### Project Structure
+> The frontend uses `st.secrets["BACKEND_URL"]` to communicate with the backend.
 
-  * **`app.py`**: The FastAPI backend. This file contains the API endpoints for uploading CSVs, generating SQL queries, and executing them. It orchestrates the LangChain agent and interacts with the database.
-  * **`frontend.py`**: The Streamlit frontend. This file provides the web-based user interface, allowing users to interact with the backend API.
-  * **`requirements.txt`**: Lists all the necessary Python libraries for the project.
-  * **`.env`**: Stores environment variables, including the `GOOGLE_API_KEY`. This file is ignored by Git for security.
-  * **`uploaded.db`**: The SQLite database file where uploaded CSV data is stored.
+---
 
------
+## Project Structure
 
-### Features
+* `app.py` – The **FastAPI backend**. Contains API endpoints for uploading CSVs, generating SQL queries, and executing them. Orchestrates the LangChain agent and interacts with the SQLite database.
+* `frontend.py` – The **Streamlit frontend**. Provides a web interface to upload CSV files and ask questions about the data.
+* `requirements.txt` – Lists all necessary Python libraries for the project.
+* `.env` – Stores environment variables, including the **GOOGLE_API_KEY**. This file is ignored by Git.
+* `uploaded.db` – The SQLite database where uploaded CSV data is stored.
 
-  * **CSV Upload**: Uploads and converts CSV files into a persistent SQLite database table.
-  * **Natural Language to SQL**: Uses Google's Gemini 1.5 Flash model to generate accurate SQLite queries from user questions.
-  * **API-driven**: The separation of the frontend and backend allows for a modular and scalable design.
-  * **Interactive UI**: A simple Streamlit interface to upload files and ask questions about the data.
+---
 
------
+## Features
 
-### Getting Started
+* **CSV Upload:** Upload and convert CSV files into a persistent SQLite database table.
+* **Natural Language to SQL:** Uses Gemini 1.5 Flash LLM to generate accurate SQLite queries from user questions.
+* **API-driven:** Separation of frontend and backend allows for modular and scalable design.
+* **Interactive UI:** Simple Streamlit interface to upload files and ask questions about the data.
 
-#### Prerequisites
+---
 
-  * Python 3.11+
-  * A valid Google Gemini API key
+## Getting Started
 
-#### Local Setup
+### Prerequisites
 
-1.  **Clone the repository**:
+* Python 3.11+
+* A valid **Google Gemini API key**
 
-    ```bash
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
-    ```
+### Local Setup
 
-2.  **Create and activate a virtual environment**:
+1. **Clone the repository:**
 
-    ```bash
-    python -m venv venv
-    venv\Scripts\activate  # On Windows
-    source venv/bin/activate  # On macOS/Linux
-    ```
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
 
-3.  **Install dependencies**:
+2. **Create and activate a virtual environment:**
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+python -m venv venv
+# On Windows
+venv\Scripts\activate
+# On macOS/Linux
+source venv/bin/activate
+```
 
-4.  **Set up environment variables**:
-    Create a `.env` file in the root directory and add your API key:
+3. **Install dependencies:**
 
-    ```
-    GOOGLE_API_KEY="YOUR_API_KEY_HERE"
-    ```
+```bash
+pip install -r requirements.txt
+```
 
-5.  **Run the backend and frontend**:
-    In two separate terminal windows, run the backend and frontend simultaneously:
+4. **Set up environment variables:**
+   Create a `.env` file in the root directory and add your API key:
 
-    **Terminal 1 (Backend)**:
+```
+GOOGLE_API_KEY="YOUR_API_KEY_HERE"
+```
 
-    ```bash
-    uvicorn app:app --reload
-    ```
+5. **Run backend and frontend locally (optional):**
+   In separate terminals:
 
-    **Terminal 2 (Frontend)**:
+**Backend:**
 
-    ```bash
-    streamlit run frontend.py
-    ```
+```bash
+uvicorn app:app --reload
+```
 
------
+**Frontend:**
 
-### Deployment
+```bash
+streamlit run frontend.py
+```
 
-The application is designed for two-part deployment:
+> Note: The frontend will read the backend URL from `st.secrets["BACKEND_URL"]` in deployed environments.
 
-  * **Backend**: Can be deployed as a web service on platforms like **Render**.
-  * **Frontend**: Can be deployed on **Streamlit Community Cloud**, which directly integrates with GitHub.
+---
 
-Remember to configure the backend URL as a secret in your Streamlit Cloud deployment.
+## Deployment
 
------
+The application is designed for **two-part deployment**:
 
-Here's the architecture diagram for your `app.py` backend:
+* **Backend:** Can be deployed on platforms like **Render**.
+* **Frontend:** Can be deployed on **Streamlit Community Cloud**, which integrates directly with GitHub.
 
-<img width="1024" height="1024" alt="sql_agent_workflow" src="https://github.com/user-attachments/assets/1ff8d1f1-e488-4eee-ad72-b38e0b10d500" />
+**Important:** Configure the backend URL as a secret in Streamlit Cloud. Example:
 
+```python
+# In Streamlit Cloud Secrets
+BACKEND_URL = "https://sql-agent-mpka.onrender.com"
+```
+
+---
+
+## Architecture Diagram
+
+Here’s a high-level workflow of the backend (`app.py`):
+
+```
+[CSV Upload] ---> [SQLite DB] ---> [LangChain + Gemini 1.5 Flash] ---> [SQL Query] ---> [Query Result]
+            \                                                      /
+             ------------------- Frontend ------------------------
+```
 
