@@ -101,6 +101,9 @@ Rules:
 - Do not allow INSERT/UPDATE/DELETE/DROP.
 - Ensure it's valid SQLite syntax.
 - Always return ONLY the corrected SQL in ```sqlite ... ``` fences.
+- Important: SQLite INSTR() only accepts 2 arguments: INSTR(string, substring).
+Do NOT use more than 2 parameters. Do NOT use Oracle-style syntax.
+
 """
 
     prompt = ChatPromptTemplate.from_messages([
@@ -249,3 +252,4 @@ def schema():
 @app.get("/")
 def root():
     return {"message": "Upload CSV at /upload, check schema at /schema, then query it at /ask"}
+
