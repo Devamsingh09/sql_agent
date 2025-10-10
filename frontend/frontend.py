@@ -33,7 +33,8 @@ if st.button("Ask") and question:
         res.raise_for_status()
         st.success("Response from backend:")
         
-        st.write(data["answer"])
+        st.write(res["answer"])
     except requests.exceptions.RequestException as e:
         st.error(f"Error connecting to backend: {e}")
+
 
