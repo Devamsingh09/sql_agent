@@ -1,4 +1,4 @@
-# backend/nodes.py
+
 import re
 import json
 import sqlparse
@@ -20,10 +20,21 @@ def query_gen_node(state: State):
 Database schema:
 {schema}
 
-Generate a valid SQLite SELECT query using only these tables/columns.
-- Wrap the SQL in ```sqlite ...``` fences.
-- Do not modify data.
-- Limit results to 50 rows unless specified.
+⚠️ STRICT RULES:
+1. Use only SQLite syntax.
+2. DO NOT invent new functions. (No INSTR() unless correct args.)
+3. Do not use SQLite string functions like INSTR() or LIKE unless the user explicitly asks for pattern matching.
+
+4. For negative amounts: use "column < 0" (preferred).
+   If column is TEXT, use "CAST(column AS REAL) < 0" or "column LIKE '-%'".
+5. Every query MUST be executable without errors.
+6. SELECT only. Never modify data.
+7. LIMIT results to 50 unless user requests more.
+8. If the question is ambiguous, ask a clarifying question instead of guessing.
+9. Wrap final SQL in:
+```sqlite
+SELECT ...
+
 """
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
