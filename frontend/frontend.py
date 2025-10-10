@@ -1,4 +1,4 @@
-# frontend.py
+
 import streamlit as st
 import requests
 
@@ -33,7 +33,7 @@ if st.button("Ask") and question:
         res.raise_for_status()
         st.success("Response from backend:")
         
-        st.write(res["answer"])
+        st.write(res.json())
     except requests.exceptions.RequestException as e:
         st.error(f"Error connecting to backend: {e}")
 
