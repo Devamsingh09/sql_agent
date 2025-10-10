@@ -1,4 +1,3 @@
-# backend/config.py
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -12,4 +11,5 @@ DB_PATH = "uploaded.db"
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 app = FastAPI(title="CSV Upload + Gemini 2.5 Flash SQL API")
+
 
