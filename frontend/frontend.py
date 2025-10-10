@@ -32,6 +32,8 @@ if st.button("Ask") and question:
         res = requests.post(f"{BACKEND_URL}/ask", json={"question": question})
         res.raise_for_status()
         st.success("Response from backend:")
-        st.json(res.json())
+        
+        st.write(data["answer"])
     except requests.exceptions.RequestException as e:
         st.error(f"Error connecting to backend: {e}")
+
