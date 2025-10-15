@@ -11,7 +11,7 @@ The project is a **full-stack application** with a **FastAPI backend** and a **S
 ## Live Application
 
 * **Backend (Render):** [https://sql-agent-mpka.onrender.com/](https://sql-agent-mpka.onrender.com/)
-* **Frontend (Streamlit):** [https://llm-based-sql-agent.streamlit.app/](https://llm-based-sql-agent.streamlit.app/)
+* **Frontend (Streamlit):** [https://aisqlagent.streamlit.app//)
 
 > The frontend reads the backend URL from `st.secrets["BACKEND_URL"]`.
 
