@@ -1,4 +1,3 @@
-# backend/database.py
 import sqlite3
 import pandas as pd
 from langchain_community.utilities import SQLDatabase
@@ -24,3 +23,4 @@ def db_query_tool(query: str):
         return {"error": str(e)}
     finally:
         conn.close()
+
