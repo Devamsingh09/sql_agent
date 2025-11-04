@@ -1,4 +1,3 @@
-# backend/utils.py
 import sqlite3
 import pandas as pd
 from backend.config import DB_PATH
@@ -9,3 +8,4 @@ def save_csv_to_db(file_path: str, table_name: str):
     conn = sqlite3.connect(DB_PATH)
     df.to_sql(table_name, conn, if_exists="replace", index=False)
     conn.close()
+
