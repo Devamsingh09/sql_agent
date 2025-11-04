@@ -1,4 +1,3 @@
-# backend/workflow.py
 from langgraph.graph import START, END, StateGraph
 #from backend.nodes import State, query_gen_node, query_validation_node, execute_query_gen, final_output_node, should_continue
 from backend.nodes import State, query_gen_node, query_validation_node, execute_query_gen, final_output_node, should_continue
@@ -14,3 +13,4 @@ workflow.add_conditional_edges("query_validation", should_continue)
 workflow.add_edge("execute_query", "final_output")
 
 app_graph = workflow.compile()
+
