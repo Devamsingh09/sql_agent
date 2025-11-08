@@ -1,5 +1,5 @@
 # SQL Agent with Gemini 2.5 Flash
-<img width="1536" height="1024" alt="sql-agent" src="https://github.com/user-attachments/assets/c4279d34-668a-4b19-9c44-e3184d1070de" />
+<img width="636" height="424" alt="sql-agent" src="https://github.com/user-attachments/assets/c4279d34-668a-4b19-9c44-e3184d1070de" />
 
 DEMO VIDEO LINK - https://drive.google.com/file/d/1zsSJWoBGnxqsaaVBHJxpLhSxRpmXSI38/view?usp=sharing
 
