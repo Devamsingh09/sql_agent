@@ -1,6 +1,6 @@
 # SQL Agent with Gemini 2.5 Flash
 <img width="400" height="400" alt="Gemini_Generated_Image_w19ayjw19ayjw19a" src="https://github.com/user-attachments/assets/4ac892e6-6564-4d08-b72c-b86659a24a2d" />
-
+DEMO VIDEO LINK - https://drive.google.com/file/d/1zsSJWoBGnxqsaaVBHJxpLhSxRpmXSI38/view?usp=sharing
 
 This project is a **web-based AI SQL assistant** that allows users to interact with a database using **natural language**. Users can upload CSV files, which are converted into a searchable SQLite database. The **Gemini 2.5 Flash LLM** is used to convert natural language questions into SQL queries, validate them, execute them, and return human-readable answers.
 
