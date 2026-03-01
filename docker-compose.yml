@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  sql_agent:
+    build: .
+    container_name: sql_agent
+    ports:
+      - "8000:8000"   # FastAPI
+      - "8501:8501"   # Streamlit
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    volumes:
+      - sql_agent_data:/app/data   # persist SQLite database
+    restart: unless-stopped
+
+volumes:
+  sql_agent_data:
