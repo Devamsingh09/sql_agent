@@ -109,6 +109,8 @@ def delete_table(table_name: str):
 def profile_table(table_name: str):
     """Generate a ydata-profiling HTML report for a table."""
     try:
+        import os
+        os.environ["PANDAS_PROFILING_NO_STREAMLIT"] = "1"  
         import pandas as pd
         import sqlite3
         from ydata_profiling import ProfileReport
