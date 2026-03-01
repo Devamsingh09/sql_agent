@@ -1,0 +1,190 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e1a"/>
+      <stop offset="100%" style="stop-color:#0d1b2a"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2744"/>
+      <stop offset="100%" style="stop-color:#0f1e35"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#0099cc"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00ff88"/>
+      <stop offset="100%" style="stop-color:#00cc66"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00d4ff"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff6b6b"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00ff88"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff08" stroke-width="0.5"/>
+  </pattern>
+  <rect width="900" height="520" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" fill="#00d4ff" font-size="18" font-weight="bold" filter="url(#glow)" letter-spacing="3">SQL AGENT — WORKFLOW ARCHITECTURE</text>
+  <line x1="150" y1="48" x2="750" y2="48" stroke="#00d4ff33" stroke-width="1"/>
+
+  <!-- ── USER INPUT (leftmost) ── -->
+  <rect x="30" y="210" width="120" height="60" rx="8" fill="url(#nodeGrad)" stroke="#00d4ff" stroke-width="1.5" filter="url(#glow)"/>
+  <text x="90" y="235" text-anchor="middle" fill="#00d4ff" font-size="10" font-weight="bold">👤 USER</text>
+  <text x="90" y="252" text-anchor="middle" fill="#8899aa" font-size="9">Natural Language</text>
+  <text x="90" y="264" text-anchor="middle" fill="#8899aa" font-size="9">Question</text>
+
+  <!-- Arrow: User → Streamlit -->
+  <line x1="150" y1="240" x2="188" y2="240" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ── STREAMLIT FRONTEND ── -->
+  <rect x="190" y="195" width="130" height="90" rx="8" fill="url(#nodeGrad)" stroke="#ff6b9d" stroke-width="1.5"/>
+  <text x="255" y="218" text-anchor="middle" fill="#ff6b9d" font-size="10" font-weight="bold">🎨 STREAMLIT</text>
+  <text x="255" y="233" text-anchor="middle" fill="#8899aa" font-size="9">Frontend UI</text>
+  <line x1="210" y1="243" x2="290" y2="243" stroke="#ffffff11" stroke-width="1"/>
+  <text x="255" y="256" text-anchor="middle" fill="#667788" font-size="8">• Upload CSV</text>
+  <text x="255" y="268" text-anchor="middle" fill="#667788" font-size="8">• Select Table</text>
+  <text x="255" y="280" text-anchor="middle" fill="#667788" font-size="8">• Ask Question</text>
+
+  <!-- Arrow: Streamlit → FastAPI -->
+  <line x1="320" y1="240" x2="358" y2="240" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="339" y="233" text-anchor="middle" fill="#667788" font-size="8">POST /ask</text>
+
+  <!-- ── FASTAPI BACKEND ── -->
+  <rect x="360" y="195" width="130" height="90" rx="8" fill="url(#nodeGrad)" stroke="#ffd700" stroke-width="1.5"/>
+  <text x="425" y="218" text-anchor="middle" fill="#ffd700" font-size="10" font-weight="bold">⚡ FASTAPI</text>
+  <text x="425" y="233" text-anchor="middle" fill="#8899aa" font-size="9">Backend API</text>
+  <line x1="380" y1="243" x2="470" y2="243" stroke="#ffffff11" stroke-width="1"/>
+  <text x="425" y="256" text-anchor="middle" fill="#667788" font-size="8">• /upload</text>
+  <text x="425" y="268" text-anchor="middle" fill="#667788" font-size="8">• /ask</text>
+  <text x="425" y="280" text-anchor="middle" fill="#667788" font-size="8">• /profile</text>
+
+  <!-- Arrow: FastAPI → LangGraph -->
+  <line x1="490" y1="240" x2="528" y2="240" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ── LANGGRAPH WORKFLOW ── -->
+  <rect x="530" y="75" width="150" height="330" rx="10" fill="#0a1525" stroke="#00d4ff44" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="605" y="97" text-anchor="middle" fill="#00d4ff88" font-size="9" letter-spacing="2">LANGGRAPH</text>
+
+  <!-- Node: query_gen -->
+  <rect x="545" y="108" width="120" height="52" rx="6" fill="url(#nodeGrad)" stroke="#00d4ff" stroke-width="1.5" filter="url(#glow)"/>
+  <text x="605" y="128" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="bold">🧠 query_gen</text>
+  <text x="605" y="143" text-anchor="middle" fill="#8899aa" font-size="8">Generate SQL from</text>
+  <text x="605" y="155" text-anchor="middle" fill="#8899aa" font-size="8">natural language</text>
+
+  <!-- Arrow down -->
+  <line x1="605" y1="160" x2="605" y2="183" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Node: query_validation -->
+  <rect x="545" y="185" width="120" height="52" rx="6" fill="url(#nodeGrad)" stroke="#ffd700" stroke-width="1.5"/>
+  <text x="605" y="205" text-anchor="middle" fill="#ffd700" font-size="9" font-weight="bold">✅ query_check</text>
+  <text x="605" y="220" text-anchor="middle" fill="#8899aa" font-size="8">Validate &amp; fix</text>
+  <text x="605" y="232" text-anchor="middle" fill="#8899aa" font-size="8">SQL query</text>
+
+  <!-- Arrow down (conditional) -->
+  <line x1="605" y1="237" x2="605" y2="260" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="622" y="252" fill="#667788" font-size="7">valid?</text>
+
+  <!-- Node: execute_query -->
+  <rect x="545" y="262" width="120" height="52" rx="6" fill="url(#nodeGrad)" stroke="#00ff88" stroke-width="1.5" filter="url(#softglow)"/>
+  <text x="605" y="282" text-anchor="middle" fill="#00ff88" font-size="9" font-weight="bold">▶ execute_query</text>
+  <text x="605" y="297" text-anchor="middle" fill="#8899aa" font-size="8">Run SQL on</text>
+  <text x="605" y="309" text-anchor="middle" fill="#8899aa" font-size="8">SQLite DB</text>
+
+  <!-- Arrow down -->
+  <line x1="605" y1="314" x2="605" y2="337" stroke="#00ff88" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- Node: nl_output -->
+  <rect x="545" y="339" width="120" height="52" rx="6" fill="url(#nodeGrad)" stroke="#ff6b9d" stroke-width="1.5"/>
+  <text x="605" y="359" text-anchor="middle" fill="#ff6b9d" font-size="9" font-weight="bold">💬 nl_output</text>
+  <text x="605" y="374" text-anchor="middle" fill="#8899aa" font-size="8">Convert to natural</text>
+  <text x="605" y="386" text-anchor="middle" fill="#8899aa" font-size="8">language answer</text>
+
+  <!-- Retry arrow (validation fail → query_gen) -->
+  <path d="M 545 211 Q 510 211 510 134 Q 510 134 545 134" fill="none" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowRed)"/>
+  <text x="496" y="175" text-anchor="middle" fill="#ff6b6b" font-size="7">retry</text>
+  <text x="496" y="184" text-anchor="middle" fill="#ff6b6b" font-size="7">≤3x</text>
+
+  <!-- Arrow: LangGraph → SQLite -->
+  <line x1="665" y1="288" x2="718" y2="288" stroke="#00ff88" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- ── SQLITE DB ── -->
+  <rect x="720" y="258" width="110" height="60" rx="8" fill="url(#nodeGrad)" stroke="#00ff88" stroke-width="1.5" filter="url(#softglow)"/>
+  <text x="775" y="282" text-anchor="middle" fill="#00ff88" font-size="10" font-weight="bold">🗄️ SQLite</text>
+  <text x="775" y="297" text-anchor="middle" fill="#8899aa" font-size="9">uploaded.db</text>
+  <text x="775" y="309" text-anchor="middle" fill="#667788" font-size="8">CSV → Tables</text>
+
+  <!-- Arrow: SQLite → back to execute -->
+  <line x1="720" y1="300" x2="667" y2="300" stroke="#00ff88" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrowGreen)"/>
+
+  <!-- ── GROQ LLM ── -->
+  <rect x="720" y="108" width="110" height="80" rx="8" fill="url(#nodeGrad)" stroke="#a78bfa" stroke-width="1.5" filter="url(#glow)"/>
+  <text x="775" y="130" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">🤖 Groq LLM</text>
+  <text x="775" y="147" text-anchor="middle" fill="#8899aa" font-size="9">llama-3.3-70b</text>
+  <line x1="735" y1="157" x2="810" y2="157" stroke="#ffffff11" stroke-width="1"/>
+  <text x="775" y="170" text-anchor="middle" fill="#667788" font-size="8">• SQL Generation</text>
+  <text x="775" y="182" text-anchor="middle" fill="#667788" font-size="8">• NL Conversion</text>
+
+  <!-- Arrow: Groq ↔ query_gen -->
+  <line x1="720" y1="148" x2="668" y2="148" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowRed)"/>
+  <line x1="668" y1="134" x2="720" y2="134" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowRed)"/>
+
+  <!-- Arrow: LangGraph result → FastAPI -->
+  <line x1="530" y1="365" x2="492" y2="365" stroke="#ff6b9d" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <path d="M 492 365 Q 425 365 425 285" fill="none" stroke="#ff6b9d" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Arrow: FastAPI → Streamlit response -->
+  <line x1="360" y1="260" x2="322" y2="260" stroke="#00ff88" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="341" y="253" text-anchor="middle" fill="#667788" font-size="8">response</text>
+
+  <!-- ── RESPONSE DISPLAY ── -->
+  <rect x="190" y="360" width="130" height="100" rx="8" fill="url(#nodeGrad)" stroke="#00ff88" stroke-width="1.5"/>
+  <text x="255" y="382" text-anchor="middle" fill="#00ff88" font-size="10" font-weight="bold">📊 Results</text>
+  <line x1="210" y1="390" x2="290" y2="390" stroke="#ffffff11" stroke-width="1"/>
+  <text x="255" y="405" text-anchor="middle" fill="#8899aa" font-size="8">🧠 SQL Query</text>
+  <text x="255" y="420" text-anchor="middle" fill="#8899aa" font-size="8">📋 Data Table</text>
+  <text x="255" y="435" text-anchor="middle" fill="#8899aa" font-size="8">💬 NL Answer</text>
+  <text x="255" y="450" text-anchor="middle" fill="#8899aa" font-size="8">📈 Insights PDF</text>
+
+  <!-- Arrow: Streamlit → Results display -->
+  <line x1="255" y1="285" x2="255" y2="358" stroke="#00ff88" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- Arrow: Results → User -->
+  <line x1="190" y1="410" x2="100" y2="410" stroke="#00ff88" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <path d="M 90 410 Q 90 270 150 270" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- ── LEGEND ── -->
+  <rect x="30" y="430" width="140" height="75" rx="6" fill="#ffffff08" stroke="#ffffff11" stroke-width="1"/>
+  <text x="100" y="447" text-anchor="middle" fill="#667788" font-size="8" letter-spacing="1">LEGEND</text>
+  <line x1="42" y1="458" x2="62" y2="458" stroke="#00d4ff" stroke-width="1.5"/>
+  <text x="68" y="461" fill="#8899aa" font-size="7">Data flow</text>
+  <line x1="42" y1="472" x2="62" y2="472" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="68" y="475" fill="#8899aa" font-size="7">Retry / LLM call</text>
+  <line x1="42" y1="486" x2="62" y2="486" stroke="#00ff88" stroke-width="1.5"/>
+  <text x="68" y="489" fill="#8899aa" font-size="7">Success path</text>
+  <line x1="42" y1="499" x2="62" y2="499" stroke="#00d4ff44" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="68" y="502" fill="#8899aa" font-size="7">LangGraph boundary</text>
+
+  <!-- Bottom tag -->
+  <text x="870" y="512" text-anchor="end" fill="#ffffff22" font-size="8">SQL AGENT v2.0</text>
+</svg>
