@@ -95,7 +95,7 @@ SELECT ...
 """
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
-        ("human", "Validate and fix the SQL if needed.")
+        ("human", "Validate and fix the SQL if needed. Use the most appropriate column name based on query asked by user.")
     ])
     checked = (prompt | llm).invoke(state)
     return {
